@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Setup Guide for Windows — Student Edition</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --purple: #6c3aed;
+            --purple-light: #ede9fe;
+            --purple-mid: #a78bfa;
+            --green: #059669;
+            --green-light: #d1fae5;
+            --amber: #d97706;
+            --amber-light: #fef3c7;
+            --red: #dc2626;
+            --red-light: #fee2e2;
+            --blue: #2563eb;
+            --blue-light: #dbeafe;
+            --bg: #0f0a1e;
+            --bg2: #1a1030;
+            --bg3: #231540;
+            --card: #1e1438;
+            --border: #2e1f5e;
+            --text: #e8d5ff;
+            --text2: #a98ecc;
+            --text3: #6b4f8a;
+            --code-bg: #0a0614;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .main {
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2d0b6b 0%, #4c1d95 50%, #6d28d9 100%);
+            padding: 28px 32px;
+            border-bottom: 1px solid #4c1d95;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-icon {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-size: 26px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.65);
+            margin-top: 4px;
+        }
+
+        .win-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+        }
+
+        /* Sidebar nav */
+        .sidebar-logo {
+            padding: 20px 16px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo span {
+            font-size: 11px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: var(--bg3);
+        }
+
+        .nav-item.active {
+            background: rgba(108, 58, 237, 0.15);
+            border-left-color: var(--purple-mid);
+        }
+
+        .nav-item .nav-emoji {
+            font-size: 18px;
+        }
+
+        .nav-item .nav-label {
+            font-size: 12px;
+            color: var(--text2);
+            font-weight: 600;
+        }
+
+        .nav-item .nav-num {
+            font-size: 10px;
+            color: var(--text3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--purple-mid);
+        }
+
+        /* Status box */
+        .status-box {
+            margin: 16px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .status-title {
+            font-size: 10px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 6px;
+        }
+
+        .status-row span:first-child {
+            color: var(--text2);
+        }
+
+        .s-ok {
+            color: #34d399;
+        }
+
+        .s-opt {
+            color: #fbbf24;
+        }
+
+        /* Content */
+        .content {
+            padding: 36px 40px;
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Chapter title */
+        .chapter-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f0e6ff;
+            margin-bottom: 6px;
+        }
+
+        .chapter-sub {
+            font-size: 13px;
+            color: var(--text2);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        /* Section divider */
+        .section-div {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 30px 0 18px;
+        }
+
+        .section-div span {
+            font-size: 10px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            white-space: nowrap;
+        }
+
+        .section-div::before,
+        .section-div::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Step */
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .step-body {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e8d5ff;
+            margin-bottom: 10px;
+        }
+
+        /* Code block */
+        .code-wrap {
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+
+        .code-header {
+            background: var(--bg3);
+            padding: 6px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-lang {
+            font-size: 10px;
+            color: var(--text3);
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            background: var(--bg2);
+            color: var(--text3);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 3px 12px;
+            font-size: 10px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.15s;
+        }
+
+        .copy-btn:hover {
+            color: var(--purple-mid);
+            border-color: var(--purple-mid);
+        }
+
+        .copy-btn.copied {
+            color: #34d399;
+            border-color: #34d399;
+        }
+
+        pre {
+            margin: 0;
+            padding: 16px 18px;
+            background: var(--code-bg);
+            color: #d4b8ff;
+            font-size: 12px;
+            line-height: 1.85;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre;
+        }
+
+        pre .cm {
+            color: #4a3a6a;
+        }
+
+        pre .kw {
+            color: #c792ea;
+        }
+
+        pre .st {
+            color: #c3e88d;
+        }
+
+        pre .nu {
+            color: #f78c6c;
+        }
+
+        /* Callout */
+        .callout {
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 12px 0;
+            border-left: 4px solid;
+        }
+
+        .callout-title {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .callout-body {
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .callout code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .c-info {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .c-info .callout-title {
+            color: #60a5fa;
+        }
+
+        .c-info .callout-body {
+            color: #93c5fd;
+        }
+
+        .c-success {
+            background: rgba(5, 150, 105, 0.1);
+            border-color: #10b981;
+        }
+
+        .c-success .callout-title {
+            color: #34d399;
+        }
+
+        .c-success .callout-body {
+            color: #6ee7b7;
+        }
+
+        .c-warn {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: #f59e0b;
+        }
+
+        .c-warn .callout-title {
+            color: #fbbf24;
+        }
+
+        .c-warn .callout-body {
+            color: #fcd34d;
+        }
+
+        .c-danger {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: #ef4444;
+        }
+
+        .c-danger .callout-title {
+            color: #f87171;
+        }
+
+        .c-danger .callout-body {
+            color: #fca5a5;
+        }
+
+        /* Prompt box */
+        .prompt-box {
+            background: rgba(108, 58, 237, 0.08);
+            border: 1.5px solid rgba(167, 139, 250, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #c4b5fd;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+
+        .prompt-label {
+            font-size: 10px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Server cards */
+        .server-card {
+            display: flex;
+            gap: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+
+        .server-card .sc-icon {
+            font-size: 22px;
+        }
+
+        .server-card .sc-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .server-card .sc-desc {
+            font-size: 12px;
+            color: var(--text2);
+        }
+
+        /* Error block */
+        .err-block {
+            margin-bottom: 22px;
+        }
+
+        .err-label {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 6px;
+        }
+
+        .err-label .err-title {
+            color: #f87171;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .err-label .err-cause {
+            color: #fca5a5;
+            font-size: 11px;
+            margin-top: 3px;
+            opacity: 0.8;
+        }
+
+        /* Flow diagram */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+
+        .flow-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .flow-box .fb-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #e8d5ff;
+        }
+
+        .flow-box .fb-sub {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        .flow-arr {
+            color: var(--border);
+            font-size: 20px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+
+        th {
+            background: var(--bg3);
+            color: var(--text2);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        tr:hover td {
+            background: var(--bg3);
+        }
+
+        .badge {
+            display: inline-block;
+            border-radius: 5px;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .b-ok {
+            background: rgba(5, 150, 105, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .b-req {
+            background: rgba(220, 38, 38, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .b-free {
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        /* Win path highlight */
+        .win-path {
+            background: rgba(217, 119, 6, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #fcd34d;
+            margin: 8px 0;
+        }
+
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .content {
+                display: block !important;
+                page-break-before: always;
+            }
+
+            .content:first-child {
+                page-break-before: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <span>MCP Student Guide</span>
+            </div>
+
+            <nav>
+                <a class="nav-item active" onclick="show('what')" href="#">
+                    <span class="nav-emoji">🧠</span>
+                    <div>
+                        <div class="nav-label">What is MCP?</div>
+                        <div class="nav-num">Chapter 01</div>
+                    </div>
+                </a>
+                <a class="nav-item" onclick="show('prereqs')" href="#">
+                    <span class="nav-emoji">⚙️</span>
+                    <div>
+                        <div class="nav-label">Prerequisites</div>
+                        <div class="nav-num">Chapter 02</div>
+                    </div>
+                </a>
+                <a class="nav-item" onclick="show('servers')" href="#">
+                    <span class="nav-emoji">📦</span>
+                    <div>
+                        <div class="nav-label">Install Servers</div>
+                        <div class="nav-num">Chapter 03</div>
+                    </div>
+                </a>
+                <a class="nav-item" onclick="show('config')" href="#">
+                    <span class="nav-emoji">🔧</span>
+                    <div>
+                        <div class="nav-label">Configure Claude</div>
+                        <div class="nav-num">Chapter 04</div>
+                    </div>
+                </a>
+                <a class="nav-item" onclick="show('verify')" href="#">
+                    <span class="nav-emoji">✅</span>
+                    <div>
+                        <div class="nav-label">Verify & Test</div>
+                        <div class="nav-num">Chapter 05</div>
+                    </div>
+                </a>
+                <a class="nav-item" onclick="show('use')" href="#">
+                    <span class="nav-emoji">💬</span>
+                    <div>
+                        <div class="nav-label">Use It</div>
+                        <div class="nav-num">Chapter 06</div>
+                    </div>
+                </a>
+                <a class="nav-item" onclick="show('errors')" href="#">
+                    <span class="nav-emoji">🚑</span>
+                    <div>
+                        <div class="nav-label">Fix Errors</div>
+                        <div class="nav-num">Chapter 07</div>
+                    </div>
+                </a>
+            </nav>
+
+            <div class="status-box">
+                <div class="status-title">Server Status</div>
+                <div class="status-row"><span>job-search</span><span class="s-ok">✓ working</span></div>
+                <div class="status-row"><span>filesystem</span><span class="s-ok">✓ working</span></div>
+                <div class="status-row"><span>duckduckgo</span><span class="s-ok">✓ working</span></div>
+                <div class="status-row"><span>playwright</span><span class="s-opt">⏳ optional</span></div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div class="header-inner">
+                    <div class="header-icon">🎓</div>
+                    <div>
+                        <h1>MCP Server Setup Guide — Windows Edition</h1>
+                        <p>Install · Configure · Test · Use · Fix Errors &nbsp;|&nbsp; Complete beginner-friendly
+                            walkthrough</p>
+                        <div class="win-badge">🪟 Windows 10 / 11 &nbsp;·&nbsp; Command Prompt &amp; PowerShell
+                            &nbsp;·&nbsp; No prior experience needed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ CHAPTER 1: WHAT IS MCP ═══ -->
+            <section class="content active" id="ch-what">
+                <div class="chapter-title">🧠 What is MCP?</div>
+                <div class="chapter-sub">Understanding the concept before we install anything. Read this first — it
+                    makes everything else make sense.</div>
+
+                <div
+                    style="background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 24px;">
+                    <div style="font-size: 13px; color: var(--text2); line-height: 1.9;">
+                        <strong style="color: #e8d5ff;">MCP = Model Context Protocol.</strong> It is an open standard
+                        created by Anthropic (the company that makes Claude).<br><br>
+                        <strong style="color: #e8d5ff;">The problem it solves:</strong> By default, Claude is like a
+                        very smart person locked in a room with no internet, no files, no access to the outside world.
+                        It can only read and respond to what you type.<br><br>
+                        <strong style="color: #e8d5ff;">What MCP does:</strong> MCP servers are like doors out of that
+                        room. Each server gives Claude access to one thing — your files, the internet, a database, job
+                        boards, a browser, etc.<br><br>
+                        <strong style="color: #e8d5ff;">Think of it like phone apps:</strong> Without apps, a phone can
+                        only make calls. With apps, it can do anything. Without MCP, Claude can only chat. With MCP
+                        servers, Claude can search for jobs, read your resume, fill application forms, and more.
+                    </div>
+                </div>
+
+                <div class="section-div"><span>How it works</span></div>
+                <div class="flow">
+                    <div class="flow-box">
+                        <div class="fb-label">You</div>
+                        <div class="fb-sub">Type a prompt</div>
+                    </div>
+                    <div class="flow-arr">→</div>
+                    <div class="flow-box">
+                        <div class="fb-label">Claude</div>
+                        <div class="fb-sub">MCP Client</div>
+                    </div>
+                    <div class="flow-arr">→</div>
+                    <div class="flow-box">
+                        <div class="fb-label">MCP Server</div>
+                        <div class="fb-sub">Tool / API</div>
+                    </div>
+                    <div class="flow-arr">→</div>
+                    <div class="flow-box">
+                        <div class="fb-label">Real World</div>
+                        <div class="fb-sub">Files, Jobs, Web</div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>The 3 servers in this guide</span></div>
+                <div class="server-card">
+                    <div class="sc-icon">🔍</div>
+                    <div>
+                        <div class="sc-name" style="color: #60a5fa;">job-search</div>
+                        <div class="sc-desc">Custom Python server. Searches Indeed, LinkedIn, Glassdoor, Naukri for real
+                            job listings simultaneously.</div>
+                    </div>
+                </div>
+                <div class="server-card">
+                    <div class="sc-icon">📁</div>
+                    <div>
+                        <div class="sc-name" style="color: #34d399;">filesystem</div>
+                        <div class="sc-desc">Official Anthropic server. Lets Claude read and write files on your
+                            computer — your resume, output files.</div>
+                    </div>
+                </div>
+                <div class="server-card">
+                    <div class="sc-icon">🦆</div>
+                    <div>
+                        <div class="sc-name" style="color: #fbbf24;">duckduckgo</div>
+                        <div class="sc-desc">Free web search. No API key needed. Research companies, salaries, and
+                            skills before applying.</div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>What you can do after setup</span></div>
+                <table>
+                    <tr>
+                        <th>Capability</th>
+                        <th>Works?</th>
+                        <th>Server Used</th>
+                    </tr>
+                    <tr>
+                        <td>Search for React jobs in Chennai</td>
+                        <td><span class="badge b-ok">✓ Yes</span></td>
+                        <td>job-search</td>
+                    </tr>
+                    <tr>
+                        <td>Read your resume file</td>
+                        <td><span class="badge b-ok">✓ Yes</span></td>
+                        <td>filesystem</td>
+                    </tr>
+                    <tr>
+                        <td>Tailor resume per job description</td>
+                        <td><span class="badge b-ok">✓ Yes</span></td>
+                        <td>Claude AI</td>
+                    </tr>
+                    <tr>
+                        <td>Save tailored resume to file</td>
+                        <td><span class="badge b-ok">✓ Yes</span></td>
+                        <td>filesystem</td>
+                    </tr>
+                    <tr>
+                        <td>Research company reviews</td>
+                        <td><span class="badge b-ok">✓ Yes</span></td>
+                        <td>duckduckgo</td>
+                    </tr>
+                    <tr>
+                        <td>Fill application forms</td>
+                        <td><span class="badge b-req">Playwright needed</span></td>
+                        <td>playwright (optional)</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- ═══ CHAPTER 2: PREREQUISITES ═══ -->
+            <section class="content" id="ch-prereqs">
+                <div class="chapter-title">⚙️ Prerequisites</div>
+                <div class="chapter-sub">Install these 4 tools before anything else. Open Command Prompt as
+                    Administrator for all commands.</div>
+
+                <div class="callout c-warn">
+                    <div class="callout-title">⚠️ Open Command Prompt as Administrator</div>
+                    <div class="callout-body">Press <strong>Windows key → type "cmd" → right-click → Run as
+                            Administrator</strong>. This is required for all installation commands in this guide.</div>
+                </div>
+
+                <div class="section-div"><span>Tool 1 — Node.js</span></div>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <div class="step-title">Check if Node.js is already installed</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>node --version
+<span class="cm"># Expected: v18.0.0 or higher (e.g. v20.11.0)
+# If you see "not recognized" → install below</span></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <div class="step-title">Install Node.js (if missing)</div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 Download from the official website</div>
+                            <div class="callout-body">Go to <strong>https://nodejs.org</strong> → Download the
+                                <strong>LTS version</strong> → Run the installer → Keep clicking Next with default
+                                options → Finish.<br><br>After install, close and reopen Command Prompt as
+                                Administrator, then run <code>node --version</code> again to verify.</div>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd — verify after install</span><button
+                                    class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre>node --version    <span class="cm"># should show v20+</span>
+npm --version     <span class="cm"># should show 10+</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Tool 2 — Python</span></div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <div class="step-title">Check Python version</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>python --version
+<span class="cm"># Expected: Python 3.9 or higher
+# If "not recognized" → install below</span></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <div class="step-title">Install Python (if missing)</div>
+                        <div class="callout c-warn">
+                            <div class="callout-title">⚠️ Critical — Check "Add Python to PATH"</div>
+                            <div class="callout-body">Go to <strong>https://python.org/downloads</strong> → Download
+                                Python 3.11 → Run installer → <strong>CHECK the box "Add Python to PATH"</strong> at the
+                                bottom of the first screen → Install Now.</div>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd — verify</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>python --version    <span class="cm"># should show Python 3.11+</span>
+pip --version       <span class="cm"># should show pip 23+</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Tool 3 — uv (Python package manager)</span></div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <div class="step-title">Install uv via PowerShell (run as Administrator)</div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 Open PowerShell as Administrator</div>
+                            <div class="callout-body">Press <strong>Windows key → type "PowerShell" → right-click → Run
+                                    as Administrator</strong></div>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">powershell — run as admin</span><button
+                                    class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</pre>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd — verify (open new cmd
+                                    window)</span><button class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre>uv --version    <span class="cm"># should show uv 0.x.x</span></pre>
+                        </div>
+                        <div class="callout c-warn">
+                            <div class="callout-title">⚠️ If uv is not recognized after install</div>
+                            <div class="callout-body">Close ALL Command Prompt windows and open a fresh one as
+                                Administrator. uv adds itself to PATH but the old window won't see it.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Tool 4 — Claude Desktop</span></div>
+                <div class="step">
+                    <div class="step-num">6</div>
+                    <div class="step-body">
+                        <div class="step-title">Download and install Claude Desktop</div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 Download link</div>
+                            <div class="callout-body">Go to <strong>https://claude.ai/download</strong> → Download for
+                                Windows → Run the installer → Sign in with your Anthropic account (or create a free
+                                one).</div>
+                        </div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ All 4 tools installed?</div>
+                            <div class="callout-body">If node, python, uv, and Claude Desktop are all working — you're
+                                ready for the next chapter!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ CHAPTER 3: INSTALL SERVERS ═══ -->
+            <section class="content" id="ch-servers">
+                <div class="chapter-title">📦 Install MCP Servers</div>
+                <div class="chapter-sub">Follow every step in order. Do not skip steps. Open Command Prompt as
+                    Administrator.</div>
+
+                <div class="section-div"><span>Create project folder</span></div>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <div class="step-title">Create your job automation folder</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>cd %USERPROFILE%
+mkdir job-automation
+mkdir job-automation\resumes
+mkdir job-automation\output
+cd job-automation</pre>
+                        </div>
+                        <div class="win-path">📁 Your folder is at: C:\Users\YourName\job-automation\</div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Server 1 — Job Search (Python)</span></div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <div class="step-title">Create a Python virtual environment</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>cd %USERPROFILE%\job-automation
+uv venv --python 3.11
+.venv\Scripts\activate</pre>
+                        </div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ Success indicator</div>
+                            <div class="callout-body">After activation, your prompt changes to show
+                                <code>(job-automation)</code> at the start. This means the venv is active.</div>
+                        </div>
+                        <div class="callout c-warn">
+                            <div class="callout-title">⚠️ Every new Command Prompt session</div>
+                            <div class="callout-body">Each time you open a new Command Prompt, run these two commands to
+                                reactivate:<br><code>cd %USERPROFILE%\job-automation</code><br><code>.venv\Scripts\activate</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <div class="step-title">Install job search libraries</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd (venv must be active)</span><button
+                                    class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre>uv pip install python-jobspy mcp</pre>
+                        </div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 This may take 1-2 minutes</div>
+                            <div class="callout-body">It downloads several packages. Wait until you see the command
+                                prompt return before moving on.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <div class="step-title">Create the job search server file</div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 How to create the file on Windows</div>
+                            <div class="callout-body">Open <strong>Notepad</strong> → paste the code below → File → Save
+                                As → navigate to <code>C:\Users\YourName\job-automation\</code> → filename:
+                                <code>job_search_server.py</code> → Save as type: All Files → Save.</div>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">python — job_search_server.py</span><button
+                                    class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre><span class="kw">from</span> mcp.server <span class="kw">import</span> Server
+<span class="kw">from</span> mcp.server.stdio <span class="kw">import</span> stdio_server
+<span class="kw">from</span> mcp.types <span class="kw">import</span> Tool, TextContent
+<span class="kw">import</span> json
+<span class="kw">from</span> jobspy <span class="kw">import</span> scrape_jobs
+
+app = Server(<span class="st">"job-search"</span>)
+
+<span class="cm"># This function tells Claude what tools are available</span>
+@app.list_tools()
+<span class="kw">async def</span> list_tools():
+    <span class="kw">return</span> [
+        Tool(
+            name=<span class="st">"search_jobs"</span>,
+            description=<span class="st">"Search for jobs across LinkedIn, Indeed, Glassdoor, Naukri"</span>,
+            inputSchema={
+                <span class="st">"type"</span>: <span class="st">"object"</span>,
+                <span class="st">"properties"</span>: {
+                    <span class="st">"search_term"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"description"</span>: <span class="st">"Job title to search"</span>},
+                    <span class="st">"location"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"description"</span>: <span class="st">"City or country"</span>},
+                    <span class="st">"results_wanted"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>, <span class="st">"default"</span>: <span class="nu">10</span>},
+                    <span class="st">"site_name"</span>: {
+                        <span class="st">"type"</span>: <span class="st">"array"</span>,
+                        <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},
+                        <span class="st">"default"</span>: [<span class="st">"indeed"</span>, <span class="st">"linkedin"</span>]
+                    },
+                    <span class="st">"is_remote"</span>: {<span class="st">"type"</span>: <span class="st">"boolean"</span>, <span class="st">"default"</span>: <span class="kw">False</span>}
+                },
+                <span class="st">"required"</span>: [<span class="st">"search_term"</span>, <span class="st">"location"</span>]
+            }
+        )
+    ]
+
+<span class="cm"># This function runs when Claude calls search_jobs</span>
+@app.call_tool()
+<span class="kw">async def</span> call_tool(name: str, arguments: dict):
+    <span class="kw">if</span> name == <span class="st">"search_jobs"</span>:
+        jobs = scrape_jobs(
+            site_name=arguments.get(<span class="st">"site_name"</span>, [<span class="st">"indeed"</span>, <span class="st">"linkedin"</span>]),
+            search_term=arguments[<span class="st">"search_term"</span>],
+            location=arguments[<span class="st">"location"</span>],
+            results_wanted=arguments.get(<span class="st">"results_wanted"</span>, <span class="nu">10</span>),
+            is_remote=arguments.get(<span class="st">"is_remote"</span>, <span class="kw">False</span>),
+        )
+        results = []
+        <span class="kw">for</span> _, row <span class="kw">in</span> jobs.iterrows():
+            results.append({
+                <span class="st">"title"</span>: str(row.get(<span class="st">"title"</span>, <span class="st">""</span>)),
+                <span class="st">"company"</span>: str(row.get(<span class="st">"company"</span>, <span class="st">""</span>)),
+                <span class="st">"location"</span>: str(row.get(<span class="st">"location"</span>, <span class="st">""</span>)),
+                <span class="st">"job_url"</span>: str(row.get(<span class="st">"job_url"</span>, <span class="st">""</span>)),
+                <span class="st">"description"</span>: str(row.get(<span class="st">"description"</span>, <span class="st">""</span>))[:<span class="nu">500</span>],
+                <span class="st">"date_posted"</span>: str(row.get(<span class="st">"date_posted"</span>, <span class="st">""</span>)),
+            })
+        <span class="kw">return</span> [TextContent(type=<span class="st">"text"</span>, text=json.dumps(results, indent=<span class="nu">2</span>))]
+
+<span class="kw">async def</span> main():
+    <span class="kw">async with</span> stdio_server() <span class="kw">as</span> (read, write):
+        <span class="kw">await</span> app.run(read, write, app.create_initialization_options())
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    <span class="kw">import</span> asyncio
+    asyncio.run(main())</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <div class="step-title">Test the server</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd (venv active)</span><button
+                                    class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre>python %USERPROFILE%\job-automation\job_search_server.py
+<span class="cm"># Expected: silence (no output = working correctly)
+# Press Ctrl+C to stop</span></pre>
+                        </div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ Silence means success</div>
+                            <div class="callout-body">MCP servers don't print anything when working. No error message =
+                                it's running correctly. Press Ctrl+C to stop it.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Server 2 — Filesystem</span></div>
+                <div class="step">
+                    <div class="step-num">6</div>
+                    <div class="step-body">
+                        <div class="step-title">Test filesystem server (downloads automatically)</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>npx -y @modelcontextprotocol/server-filesystem %USERPROFILE%\job-automation
+<span class="cm"># Expected: "Secure MCP Filesystem Server running on stdio"
+# Press Ctrl+C to stop</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Server 3 — DuckDuckGo Search</span></div>
+                <div class="step">
+                    <div class="step-num">7</div>
+                    <div class="step-body">
+                        <div class="step-title">Test DuckDuckGo server (free, no API key)</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>npx -y duckduckgo-mcp-server
+<span class="cm"># Expected: "DuckDuckGo Search MCP Server running on stdio"
+# Press Ctrl+C to stop</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Save your resume</span></div>
+                <div class="step">
+                    <div class="step-num">8</div>
+                    <div class="step-body">
+                        <div class="step-title">Save your resume as plain text</div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 How to save your resume as plain text</div>
+                            <div class="callout-body">
+                                1. Open <strong>Notepad</strong> (not Word)<br>
+                                2. Copy your resume content from Word/PDF and paste into Notepad<br>
+                                3. File → Save As<br>
+                                4. Navigate to <code>C:\Users\YourName\job-automation\resumes\</code><br>
+                                5. Filename: <code>base-resume.txt</code><br>
+                                6. Save as type: <strong>Text Documents (*.txt)</strong><br>
+                                7. Click Save
+                            </div>
+                        </div>
+                        <div class="win-path">📄 Resume saved at:
+                            C:\Users\YourName\job-automation\resumes\base-resume.txt</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ CHAPTER 4: CONFIG ═══ -->
+            <section class="content" id="ch-config">
+                <div class="chapter-title">🔧 Configure Claude Desktop</div>
+                <div class="chapter-sub">Tell Claude Desktop which MCP servers to start. You do this by editing one JSON
+                    config file.</div>
+
+                <div class="callout c-info">
+                    <div class="callout-title">💡 Config file location on Windows</div>
+                    <div class="callout-body">The config file is
+                        at:<br><code>%APPDATA%\Claude\claude_desktop_config.json</code><br><br>Which is usually:
+                        <code>C:\Users\YourName\AppData\Roaming\Claude\claude_desktop_config.json</code></div>
+                </div>
+
+                <div class="section-div"><span>Find your username</span></div>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <div class="step-title">Get your Windows username</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>echo %USERNAME%
+<span class="cm"># Example output: student01
+# Use this in the config file below</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Get the Python path</span></div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <div class="step-title">Find the exact path to Python in your venv</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd (venv active)</span><button
+                                    class="copy-btn" onclick="cp(this)">copy</button></div>
+                            <pre>cd %USERPROFILE%\job-automation
+.venv\Scripts\activate
+where python
+<span class="cm"># Example output:
+# C:\Users\student01\job-automation\.venv\Scripts\python.exe
+# Copy this path — you need it in the config</span></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Open and edit the config file</span></div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <div class="step-title">Open config file in Notepad</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>notepad %APPDATA%\Claude\claude_desktop_config.json</pre>
+                        </div>
+                        <div class="callout c-warn">
+                            <div class="callout-title">⚠️ If the file doesn't open</div>
+                            <div class="callout-body">The Claude folder may not exist yet. Open Claude Desktop once
+                                first, then try again. Or open Claude Desktop → Settings (top left) → Developer → Edit
+                                Config.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <div class="step-title">Replace all content with this config — update YOUR_USERNAME in 3 places
+                        </div>
+                        <div class="callout c-danger">
+                            <div class="callout-title">❌ Important — Replace YOUR_USERNAME</div>
+                            <div class="callout-body">The config below has <code>YOUR_USERNAME</code> in 3 places.
+                                Replace ALL 3 with your actual Windows username from Step 1. Also use double backslashes
+                                <code>\\</code> in paths on Windows.</div>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">json —
+                                    claude_desktop_config.json</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre>{
+  <span class="st">"mcpServers"</span>: {
+    <span class="st">"job-search"</span>: {
+      <span class="st">"command"</span>: <span class="st">"C:\\Users\\YOUR_USERNAME\\job-automation\\.venv\\Scripts\\python.exe"</span>,
+      <span class="st">"args"</span>: [
+        <span class="st">"C:\\Users\\YOUR_USERNAME\\job-automation\\job_search_server.py"</span>
+      ]
+    },
+    <span class="st">"filesystem"</span>: {
+      <span class="st">"command"</span>: <span class="st">"npx"</span>,
+      <span class="st">"args"</span>: [
+        <span class="st">"-y"</span>,
+        <span class="st">"@modelcontextprotocol/server-filesystem"</span>,
+        <span class="st">"C:\\Users\\YOUR_USERNAME\\job-automation"</span>
+      ]
+    },
+    <span class="st">"duckduckgo"</span>: {
+      <span class="st">"command"</span>: <span class="st">"npx"</span>,
+      <span class="st">"args"</span>: [<span class="st">"-y"</span>, <span class="st">"duckduckgo-mcp-server"</span>]
+    }
+  }
+}</pre>
+                        </div>
+                        <div class="callout c-info">
+                            <div class="callout-title">💡 Example with real username "student01"</div>
+                            <div class="callout-body">
+                                <code>"command": "C:\\Users\\student01\\job-automation\\.venv\\Scripts\\python.exe"</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <div class="step-title">Save the file and restart Claude Desktop</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">steps</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre><span class="cm">1. In Notepad: Ctrl+S to save
+2. Close Notepad
+3. Right-click Claude in taskbar → Quit
+   (Must fully quit — not just close the window)
+4. Reopen Claude Desktop from Start Menu
+5. Wait 10 seconds for servers to start</span></pre>
+                        </div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ After restart</div>
+                            <div class="callout-body">Look at the bottom of the Claude chat input box. You should see a
+                                <strong>+ button</strong> or <strong>🔨 hammer icon</strong>. Click it to see available
+                                MCP tools.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ CHAPTER 5: VERIFY ═══ -->
+            <section class="content" id="ch-verify">
+                <div class="chapter-title">✅ Verify & Test</div>
+                <div class="chapter-sub">After restarting Claude Desktop, confirm each server is connected and working.
+                </div>
+
+                <div class="section-div"><span>Check logs</span></div>
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <div class="step-title">View MCP server logs</div>
+                        <div class="code-wrap">
+                            <div class="code-header"><span class="code-lang">cmd</span><button class="copy-btn"
+                                    onclick="cp(this)">copy</button></div>
+                            <pre><span class="cm"># List all log files</span>
+dir %APPDATA%\Claude\logs\
+
+<span class="cm"># Read job-search log</span>
+type %APPDATA%\Claude\logs\mcp-server-job-search.log
+
+<span class="cm"># Read filesystem log</span>
+type %APPDATA%\Claude\logs\mcp-server-filesystem.log
+
+<span class="cm"># Read duckduckgo log</span>
+type %APPDATA%\Claude\logs\mcp-server-duckduckgo.log</pre>
+                        </div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ Good log — server connected</div>
+                            <div class="callout-body">Look for lines like: <code>"Message from server"</code> and
+                                <code>"tools"</code> listed. This means the server is connected and Claude knows what
+                                tools are available.</div>
+                        </div>
+                        <div class="callout c-danger">
+                            <div class="callout-title">❌ Bad log — server failed</div>
+                            <div class="callout-body">If you see: <code>spawn error</code>, <code>ENOENT</code>,
+                                <code>ModuleNotFoundError</code>, or <code>cannot find the path</code> — go to the Fix
+                                Errors chapter.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Test prompts — paste in Claude Desktop chat</span></div>
+
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <div class="step-title">Test job-search server</div>
+                        <div class="prompt-label">paste this in Claude Desktop</div>
+                        <div class="prompt-box">Use the search_jobs tool to find "React Developer" jobs in Chennai
+                            India. Show me 5 results as a table.</div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ Expected result</div>
+                            <div class="callout-body">Claude returns a table with real job listings — company names,
+                                roles, locations, and apply URLs.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <div class="step-title">Test filesystem server</div>
+                        <div class="prompt-label">paste this in Claude Desktop</div>
+                        <div class="prompt-box">Read my resume from
+                            C:\Users\YOUR_USERNAME\job-automation\resumes\base-resume.txt and list my top 3 technical
+                            skills.</div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ Expected result</div>
+                            <div class="callout-body">Claude reads your resume file and tells you your top skills
+                                correctly.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <div class="step-title">Test duckduckgo server</div>
+                        <div class="prompt-label">paste this in Claude Desktop</div>
+                        <div class="prompt-box">Search the web for "React developer salary Chennai 2025" and tell me the
+                            average salary range for 5-6 years of experience.</div>
+                        <div class="callout c-success">
+                            <div class="callout-title">✅ Expected result</div>
+                            <div class="callout-body">Claude searches DuckDuckGo and returns salary information from
+                                real websites.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ CHAPTER 6: USE IT ═══ -->
+            <section class="content" id="ch-use">
+                <div class="chapter-title">💬 Use It — Real Prompts</div>
+                <div class="chapter-sub">Copy these prompts into Claude Desktop. All 3 servers work together
+                    automatically.</div>
+
+                <div class="section-div"><span>Job search prompts</span></div>
+
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <div class="step-title">Find product-based company jobs</div>
+                        <div class="prompt-label">paste in Claude Desktop</div>
+                        <div class="prompt-box">Search for "React TypeScript Developer" jobs in Chennai India using the
+                            search_jobs tool.
+
+                            From the results, show me only product-based companies.
+                            (Skip service companies like TCS, Infosys, Wipro, HCL, Cognizant)
+
+                            Show as a table: Company | Role | Posted Date | Apply URL</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <div class="step-title">Find remote jobs open to India</div>
+                        <div class="prompt-label">paste in Claude Desktop</div>
+                        <div class="prompt-box">Search for remote React Frontend Developer jobs open to candidates in
+                            India.
+                            Use is_remote: true in the search_jobs tool.
+                            Show me 10 results with salary info if available.</div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Resume tailoring</span></div>
+
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <div class="step-title">Tailor resume for a specific job</div>
+                        <div class="prompt-label">paste in Claude Desktop — replace YOUR_USERNAME and paste JD</div>
+                        <div class="prompt-box">Read my resume from
+                            C:\Users\YOUR_USERNAME\job-automation\resumes\base-resume.txt
+
+                            Here is the job description I want to apply for:
+                            [PASTE THE FULL JOB DESCRIPTION HERE]
+
+                            Please:
+                            1. Rewrite my resume to match the keywords in this JD
+                            2. Give me an ATS score out of 100
+                            3. List keywords in the JD I genuinely have but haven't mentioned
+                            4. Save the tailored resume to
+                            C:\Users\YOUR_USERNAME\job-automation\output\company-resume.txt</div>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Full pipeline — all 3 servers together</span></div>
+
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <div class="step-title">Complete job hunt workflow</div>
+                        <div class="prompt-label">paste in Claude Desktop — replace YOUR_USERNAME</div>
+                        <div class="prompt-box">I want to find and apply for jobs at product-based companies.
+
+                            STEP 1 — Search
+                            Use search_jobs to find "React TypeScript Developer" jobs in Chennai India.
+                            Show only product-based companies (not service companies).
+
+                            STEP 2 — Research
+                            For the top 3 matches, search DuckDuckGo to find:
+                            - What product the company builds
+                            - Employee reviews
+                            - Tech stack they use
+
+                            STEP 3 — Tailor
+                            Read my resume from C:\Users\YOUR_USERNAME\job-automation\resumes\base-resume.txt
+                            For the best matching job, tailor my resume for their JD.
+                            Save to C:\Users\YOUR_USERNAME\job-automation\output\[company]-resume.txt
+
+                            STEP 4 — Report
+                            Give me a final summary table:
+                            Company | Role | Match % | ATS Score | Resume Saved | Apply URL
+
+                            IMPORTANT: If you need any information from me at any point
+                            (salary expectation, notice period, certifications) —
+                            STOP and ask me before proceeding.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ CHAPTER 7: FIX ERRORS ═══ -->
+            <section class="content" id="ch-errors">
+                <div class="chapter-title">🚑 Fix Errors</div>
+                <div class="chapter-sub">Find your error below and follow the exact fix steps.</div>
+
+                <div class="err-block">
+                    <div class="err-label">
+                        <div class="err-title">Error: 'uv' is not recognized as an internal or external command</div>
+                        <div class="err-cause">Cause: uv was installed but Windows PATH wasn't updated</div>
+                    </div>
+                    <div class="code-wrap">
+                        <div class="code-header"><span class="code-lang">fix — cmd</span><button class="copy-btn"
+                                onclick="cp(this)">copy</button></div>
+                        <pre><span class="cm"># Close ALL Command Prompt windows
+# Open a fresh one as Administrator
+# Then try again:</span>
+uv --version
+
+<span class="cm"># If still not found, add to PATH manually:
+# Windows key → "Environment Variables" → System Variables
+# → Path → Edit → New → Add: C:\Users\YourName\.local\bin
+# → OK → OK → restart CMD</span></pre>
+                    </div>
+                </div>
+
+                <div class="err-block">
+                    <div class="err-label">
+                        <div class="err-title">Error: No module named 'jobspy' or No module named 'mcp'</div>
+                        <div class="err-cause">Cause: venv is not activated or packages not installed</div>
+                    </div>
+                    <div class="code-wrap">
+                        <div class="code-header"><span class="code-lang">fix — cmd</span><button class="copy-btn"
+                                onclick="cp(this)">copy</button></div>
+                        <pre>cd %USERPROFILE%\job-automation
+.venv\Scripts\activate
+<span class="cm"># Make sure you see (job-automation) in prompt</span>
+uv pip install python-jobspy mcp
+<span class="cm"># Verify:</span>
+python -c "import jobspy; print('jobspy OK')"
+python -c "import mcp; print('mcp OK')"</pre>
+                    </div>
+                </div>
+
+                <div class="err-block">
+                    <div class="err-label">
+                        <div class="err-title">Error: Hammer icon / tools not showing in Claude Desktop</div>
+                        <div class="err-cause">Cause: Claude was not fully restarted after config change</div>
+                    </div>
+                    <div class="code-wrap">
+                        <div class="code-header"><span class="code-lang">fix — steps</span><button class="copy-btn"
+                                onclick="cp(this)">copy</button></div>
+                        <pre><span class="cm"># Fully quit Claude Desktop:
+# Right-click Claude icon in taskbar → Quit
+# OR: Task Manager → find Claude → End Task
+# Wait 5 seconds
+# Reopen from Start Menu
+# Wait 10 seconds — servers take time to start
+# Click the + button at bottom of chat input</span></pre>
+                    </div>
+                </div>
+
+                <div class="err-block">
+                    <div class="err-label">
+                        <div class="err-title">Error: The system cannot find the path specified</div>
+                        <div class="err-cause">Cause: Python path in config.json is wrong</div>
+                    </div>
+                    <div class="code-wrap">
+                        <div class="code-header"><span class="code-lang">fix — cmd</span><button class="copy-btn"
+                                onclick="cp(this)">copy</button></div>
+                        <pre><span class="cm"># Get the correct python path:</span>
+cd %USERPROFILE%\job-automation
+.venv\Scripts\activate
+where python
+<span class="cm"># Copy the output (e.g. C:\Users\student01\job-automation\.venv\Scripts\python.exe)
+# Open config file and paste this as the "command" value
+# Remember to double every backslash: C:\\Users\\...</span>
+
+notepad %APPDATA%\Claude\claude_desktop_config.json</pre>
+                    </div>
+                </div>
+
+                <div class="err-block">
+                    <div class="err-label">
+                        <div class="err-title">Error: npx is not recognized</div>
+                        <div class="err-cause">Cause: Node.js is not installed or not in PATH</div>
+                    </div>
+                    <div class="code-wrap">
+                        <div class="code-header"><span class="code-lang">fix — cmd</span><button class="copy-btn"
+                                onclick="cp(this)">copy</button></div>
+                        <pre>node --version
+npm --version
+<span class="cm"># If either fails → reinstall Node.js from https://nodejs.org
+# Use LTS version, run installer with default options
+# Close and reopen CMD after install</span></pre>
+                    </div>
+                </div>
+
+                <div class="err-block">
+                    <div class="err-label">
+                        <div class="err-title">Error: Server connected but returns no jobs</div>
+                        <div class="err-cause">Cause: Job boards may be rate-limiting or temporarily blocking</div>
+                    </div>
+                    <div class="code-wrap">
+                        <div class="code-header"><span class="code-lang">fix — try different sites</span><button
+                                class="copy-btn" onclick="cp(this)">copy</button></div>
+                        <pre><span class="cm"># In Claude Desktop, try a different site_name:
+# "Use search_jobs with site_name: ['indeed'] to find React jobs in Chennai"
+# Or:
+# "Use search_jobs with site_name: ['glassdoor'] to find Frontend jobs"
+# Wait 5 minutes between attempts to avoid rate limiting</span></pre>
+                    </div>
+                </div>
+
+                <div class="section-div"><span>Golden rule for debugging</span></div>
+                <div class="callout c-success">
+                    <div class="callout-title">✅ Always check the log file first</div>
+                    <div class="callout-body">The log file tells you the exact error. Run this and read the
+                        output:<br><br>
+                        <code>type %APPDATA%\Claude\logs\mcp-server-job-search.log</code><br><br>
+                        The error message in the log will guide you to the right fix above.
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        function show(id) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('ch-' + id).classList.add('active');
+            event.currentTarget.classList.add('active');
+            document.querySelector('.main').scrollTop = 0;
+        }
+
+        function cp(btn) {
+            const pre = btn.closest('.code-wrap').querySelector('pre');
+            const text = pre.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'copied!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
